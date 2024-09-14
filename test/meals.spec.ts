@@ -25,9 +25,11 @@ describe('Meals routes', () => {
   })
 
   it('should be able to create a new meal', async () => {
+    const cookies = userResponse.get('Set-Cookie') ?? []
+
     await request(app.server)
       .post('/meals')
-      .set('Cookie', userResponse.get('Set-Cookie') ?? [])
+      .set('Cookie', cookies)
       .send({
         name: 'Banana',
         description: 'Some bananas',

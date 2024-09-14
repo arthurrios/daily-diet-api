@@ -105,4 +105,37 @@ describe('Meals routes', () => {
       }),
     )
   })
+
+  it('should be able to update a specific meal', async () => {
+    const cookies = userResponse.get('Set-Cookie') ?? []
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Banana',
+        description: 'Some bananas',
+        isOnDiet: true,
+        date: new Date(),
+      })
+      .expect(201)
+
+    const listMealsResponse = await request(app.server)
+      .get('/meals')
+      .set('Cookie', cookies)
+      .expect(200)
+
+    const mealId = listMealsResponse.body.meals[0].id
+
+    await request(app.server)
+      .put(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+      .send({
+        name: 'Hamburger',
+        description: 'Big hamburger',
+        isOnDiet: false,
+        date: new Date(),
+      })
+      .expect(204)
+  })
 })

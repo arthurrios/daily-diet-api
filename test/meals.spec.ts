@@ -138,4 +138,75 @@ describe('Meals routes', () => {
       })
       .expect(204)
   })
+
+  it('should be able to get meals metrics', async () => {
+    const cookies = userResponse.get('Set-Cookie') ?? []
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Banana',
+        description: 'Some bananas',
+        isOnDiet: true,
+        date: new Date('2024-08-14T09:00:00'),
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Hamburger',
+        description: 'Big hamburger',
+        isOnDiet: false,
+        date: new Date('2024-08-14T10:00:00'),
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Sandwich',
+        description: 'Healthy sandwich',
+        isOnDiet: true,
+        date: new Date('2024-08-14T14:00:00'),
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Strawberries',
+        description: '4 strawberries',
+        isOnDiet: true,
+        date: new Date('2024-08-14T15:00:00'),
+      })
+      .expect(201)
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Orange',
+        description: '1 orange',
+        isOnDiet: true,
+        date: new Date('2024-08-14T17:00:00'),
+      })
+      .expect(201)
+
+    const metricsResponse = await request(app.server)
+      .get('/meals/metrics')
+      .set('Cookie', cookies)
+      .expect(200)
+
+    expect(metricsResponse.body).toEqual({
+      totalMeals: 5,
+      totalMealsOnDiet: 4,
+      totalMealsNotOnDiet: 1,
+      bestHealthyStreak: 3,
+    })
+  })
 })

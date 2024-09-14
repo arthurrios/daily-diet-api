@@ -1,6 +1,14 @@
 # Dependencies
-node_modules
+node_modules/
 pnpm-lock.*
+.vscode/
+
+# Databse
+db/*.db
 
 # Environment
 .env
+.env.test
+
+# Build
+build

@@ -140,6 +140,32 @@ describe('Meals routes', () => {
       })
       .expect(204)
   })
+  it('should be able to delete a specific meal', async () => {
+    const cookies = userResponse.get('Set-Cookie') ?? []
+
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Banana',
+        description: 'Some bananas',
+        isOnDiet: true,
+        date: new Date(),
+      })
+      .expect(201)
+
+    const listMealsResponse = await request(app.server)
+      .get('/meals')
+      .set('Cookie', cookies)
+      .expect(200)
+
+    const mealId = listMealsResponse.body.meals[0].id
+
+    await request(app.server)
+      .delete(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+      .expect(204)
+  })
 
   it('should be able to get meals metrics', async () => {
     const cookies = userResponse.get('Set-Cookie') ?? []

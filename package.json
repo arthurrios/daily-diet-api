@@ -7,6 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "knex": "node --import tsx ./node_modules/knex/bin/cli.js",
     "lint": "eslint src --ext .ts --fix",
+    "build": "tsup src --out-dir build",
     "test": "vitest run test/users.spec.ts && vitest run --exclude=test/users.spec.ts test/*.spec.ts"
   },
   "keywords": [],
@@ -27,6 +28,7 @@
     "eslint": "^8.0.0",
     "sqlite3": "^5.1.7",
     "supertest": "^7.0.0",
+    "tsup": "^8.2.4",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
     "vitest": "^2.1.1"
